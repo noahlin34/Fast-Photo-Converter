@@ -67,18 +67,19 @@ export function FormatSelectionScreen() {
       <View style={{ gap: Spacing.four }}>
         <SectionTitle title="Preview" />
 
-        <SurfaceCard padding={Spacing.four} radius={Radii.xl} style={{ gap: Spacing.four }}>
+        <SurfaceCard padding={Spacing.four} radius={Radii.xl} tone="sky" style={{ gap: Spacing.four }}>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.two }}>
             <InfoPill label={`Original ${getSourceFormatLabel(currentPhoto)}`} tone="accent" />
             <InfoPill label={formatBytes(currentPhoto.fileSize)} />
-            <InfoPill label={formatDimensions(currentPhoto.width, currentPhoto.height)} />
+            <InfoPill label={formatDimensions(currentPhoto.width, currentPhoto.height)} tone="sky" />
           </View>
 
           <View
             style={{
-              backgroundColor: theme.surfaceMuted,
+              backgroundColor: theme.surface,
               borderRadius: Radii.xl,
               borderCurve: 'continuous',
+              boxShadow: '0 18px 30px rgba(23, 38, 78, 0.05)',
               overflow: 'hidden',
               position: 'relative',
             }}>
@@ -112,6 +113,7 @@ export function FormatSelectionScreen() {
             icon={{ android: 'image', ios: 'photo', web: 'photo' } satisfies PlatformIcon}
             label="JPEG"
             onPress={() => void selectFormat('jpeg')}
+            tone="peach"
           />
           <FormatOptionCard
             active={outputFormat === 'png'}
@@ -123,6 +125,7 @@ export function FormatSelectionScreen() {
             } satisfies PlatformIcon}
             label="PNG"
             onPress={() => void selectFormat('png')}
+            tone="sky"
           />
         </View>
 
@@ -133,6 +136,7 @@ export function FormatSelectionScreen() {
             icon={{ android: 'public', ios: 'sparkles', web: 'sparkles' } satisfies PlatformIcon}
             label="WebP"
             onPress={() => void selectFormat('webp')}
+            tone="mint"
           />
           <FormatOptionCard
             active={outputFormat === 'heic'}
@@ -141,11 +145,12 @@ export function FormatSelectionScreen() {
             icon={{ android: 'camera_alt', ios: 'camera', web: 'camera' } satisfies PlatformIcon}
             label="HEIC"
             onPress={() => void selectFormat('heic')}
+            tone="lilac"
           />
         </View>
 
         {!heicEncodingAvailable ? (
-          <SurfaceCard padding={Spacing.four} radius={Radii.lg} tone="muted" style={{ gap: 6 }}>
+          <SurfaceCard padding={Spacing.four} radius={Radii.lg} tone="lilac" style={{ gap: 6 }}>
             <Text
               style={{
                 color: theme.text,
@@ -172,7 +177,7 @@ export function FormatSelectionScreen() {
       <View style={{ gap: Spacing.four }}>
         <SectionTitle title="Quality" />
         {isLosslessFormat ? (
-          <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="muted" style={{ gap: 8 }}>
+          <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="lilac" style={{ gap: 8 }}>
             <Text
               style={{
                 color: theme.text,

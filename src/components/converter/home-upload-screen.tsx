@@ -13,6 +13,7 @@ import {
   SeeAllLink,
   SurfaceCard,
   type PlatformIcon,
+  type SurfaceTone,
 } from '@/components/converter/shared';
 import { Fonts, Radii, Spacing, Type } from '@/constants/theme';
 import { useConverterSettings } from '@/features/converter/converter-settings';
@@ -86,7 +87,7 @@ export function HomeUploadScreen() {
     <ConverterScreen>
       <View style={{ gap: Spacing.five }}>
         <Pressable onPress={handlePick} style={({ pressed }) => ({ opacity: pressed ? 0.92 : 1 })}>
-          <SurfaceCard padding={Spacing.six} radius={Radii.xl} tone="accent" style={{ gap: Spacing.six }}>
+          <SurfaceCard padding={Spacing.six} radius={Radii.xl} tone="peach" style={{ gap: Spacing.six }}>
             <View
               style={{
                 alignItems: 'center',
@@ -98,10 +99,10 @@ export function HomeUploadScreen() {
                   alignItems: 'center',
                   backgroundColor: theme.surfaceRaised,
                   borderRadius: Radii.pill,
-                  boxShadow: '0 12px 28px rgba(15, 143, 131, 0.12)',
-                  height: 86,
+                  boxShadow: '0 14px 28px rgba(23, 38, 78, 0.08)',
+                  height: 88,
                   justifyContent: 'center',
-                  width: 86,
+                  width: 88,
                 }}>
                 <AppSymbol
                   icon={{ android: 'photo-library', ios: 'photo.on.rectangle.angled', web: 'photo.on.rectangle.angled' }}
@@ -114,7 +115,7 @@ export function HomeUploadScreen() {
               <View
                 style={{
                   alignItems: 'center',
-                  backgroundColor: theme.surfaceRaised,
+                  backgroundColor: theme.accent,
                   borderRadius: Radii.pill,
                   height: 42,
                   justifyContent: 'center',
@@ -123,7 +124,7 @@ export function HomeUploadScreen() {
                 <AppSymbol
                   icon={{ android: 'arrow_forward', ios: 'arrow.right', web: 'arrow.right' }}
                   size={16}
-                  tintColor={theme.accentStrong}
+                  tintColor="#fffaf7"
                   weight="bold"
                 />
               </View>
@@ -139,7 +140,7 @@ export function HomeUploadScreen() {
                   lineHeight: 34,
                   letterSpacing: -0.8,
                 }}>
-                Select a photo
+                Pick a photo
               </Text>
               <Text
                 style={{
@@ -148,14 +149,14 @@ export function HomeUploadScreen() {
                   fontSize: Type.body.fontSize,
                   lineHeight: Type.body.lineHeight,
                 }}>
-                Choose an image from your library and we’ll take you straight to format selection.
+                Start with something from Photos or shoot a new image. We’ll keep the conversion local on your device.
               </Text>
             </View>
 
             <View style={{ alignItems: 'center', flexDirection: 'row', gap: Spacing.two }}>
               <Text
                 style={{
-                  color: theme.accentStrong,
+                  color: theme.text,
                   fontFamily: Fonts.sans,
                   fontSize: Type.bodySmall.fontSize,
                   fontWeight: '700',
@@ -166,7 +167,7 @@ export function HomeUploadScreen() {
               <AppSymbol
                 icon={{ android: 'arrow_forward', ios: 'arrow.right', web: 'arrow.right' }}
                 size={13}
-                tintColor={theme.accentStrong}
+                tintColor={theme.text}
                 weight="bold"
               />
             </View>
@@ -184,12 +185,14 @@ export function HomeUploadScreen() {
           }}
           label="Gallery"
           onPress={handlePick}
+          tone="sky"
         />
         <QuickActionButton
           description="Capture something new"
           icon={{ android: 'photo-camera', ios: 'camera', web: 'camera' }}
           label="Camera"
           onPress={handleCamera}
+          tone="butter"
         />
       </View>
 
@@ -207,12 +210,13 @@ export function HomeUploadScreen() {
                       pathname: '/history/[id]',
                     })
                   }
+                  tone="sky"
                 />
               ) : null}
 
               {gridItems.length ? (
                 <View style={{ flexDirection: 'row', gap: Spacing.four }}>
-                  {gridItems.map((item) => (
+                  {gridItems.map((item, index) => (
                     <RecentMiniCard
                       key={item.id}
                       item={item}
@@ -222,6 +226,7 @@ export function HomeUploadScreen() {
                           pathname: '/history/[id]',
                         })
                       }
+                      tone={index % 2 === 0 ? 'butter' : 'lilac'}
                     />
                   ))}
                 </View>
@@ -241,11 +246,13 @@ function QuickActionButton({
   icon,
   label,
   onPress,
+  tone,
 }: {
   description: string;
   icon: PlatformIcon;
   label: string;
   onPress: () => void;
+  tone: SurfaceTone;
 }) {
   const theme = useTheme();
 
@@ -257,12 +264,13 @@ function QuickActionButton({
         flex: 1,
         opacity: pressed ? 0.84 : 1,
       })}>
-      <SurfaceCard padding={Spacing.five} radius={Radii.lg} tone="raised" style={{ gap: Spacing.three }}>
+      <SurfaceCard padding={Spacing.five} radius={Radii.lg} tone={tone} style={{ gap: Spacing.three }}>
         <View
           style={{
             alignItems: 'center',
-            backgroundColor: theme.surfaceAccent,
+            backgroundColor: theme.surface,
             borderRadius: Radii.pill,
+            boxShadow: '0 10px 22px rgba(23, 38, 78, 0.08)',
             height: 48,
             justifyContent: 'center',
             width: 48,
@@ -302,7 +310,7 @@ function EmptyRecentState() {
       description="Convert your first photo and we’ll keep recent exports handy here for quick access."
       icon={{ android: 'history', ios: 'clock.arrow.circlepath', web: 'clock.arrow.circlepath' }}
       title="Your recent exports will show up here"
-      tone="muted"
+      tone="lilac"
     />
   );
 }

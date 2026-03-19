@@ -13,6 +13,7 @@ import {
   SettingsSwitch,
   SurfaceCard,
   type PlatformIcon,
+  type SurfaceTone,
 } from '@/components/converter/shared';
 import { Fonts, Radii, Spacing, Type } from '@/constants/theme';
 import { useConverterSettings } from '@/features/converter/converter-settings';
@@ -116,7 +117,7 @@ export function SettingsScreen() {
       <View style={{ gap: Spacing.four }}>
         <SectionTitle title="Defaults" />
 
-        <SurfaceCard padding={Spacing.five} radius={Radii.xl} style={{ gap: Spacing.five }}>
+        <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="sky" style={{ gap: Spacing.five }}>
           <View style={{ gap: 8 }}>
             <Text
               style={{
@@ -149,6 +150,7 @@ export function SettingsScreen() {
                   icon={item.icon}
                   label={item.label}
                   onPress={() => setDefaultOutputFormat(item.format)}
+                  tone={getFormatTone(item.format)}
                 />
               </View>
             ))}
@@ -167,7 +169,7 @@ export function SettingsScreen() {
           ) : null}
         </SurfaceCard>
 
-        <SurfaceCard padding={Spacing.five} radius={Radii.xl} style={{ gap: Spacing.five }}>
+        <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="butter" style={{ gap: Spacing.five }}>
           <View style={{ gap: 8 }}>
             <Text
               style={{
@@ -199,7 +201,7 @@ export function SettingsScreen() {
       <View style={{ gap: Spacing.four }}>
         <SectionTitle title="History" />
 
-        <SurfaceCard padding={Spacing.five} radius={Radii.xl} style={{ gap: Spacing.five }}>
+        <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="raised" style={{ gap: Spacing.five }}>
           <View
             style={{
               alignItems: 'center',
@@ -319,7 +321,7 @@ export function SettingsScreen() {
       <View style={{ gap: Spacing.four, paddingBottom: Spacing.seven }}>
         <SectionTitle title="About" />
 
-        <SurfaceCard padding={Spacing.five} radius={Radii.xl} style={{ gap: 0 }}>
+        <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="lilac" style={{ gap: 0 }}>
           <SettingsLinkRow
             description="Read how the app handles photos and on-device data."
             icon={{
@@ -356,6 +358,7 @@ function FormatPreferenceButton({
   icon,
   label,
   onPress,
+  tone,
 }: {
   active: boolean;
   disabled?: boolean;
@@ -363,8 +366,22 @@ function FormatPreferenceButton({
   icon: PlatformIcon;
   label: string;
   onPress: () => void;
+  tone: SurfaceTone;
 }) {
   const theme = useTheme();
+  const backgroundColor = disabled
+    ? theme.surfaceMuted
+    : active
+      ? theme.surface
+      : tone === 'peach'
+        ? theme.surfacePeach
+        : tone === 'sky'
+          ? theme.surfaceSky
+          : tone === 'mint'
+            ? theme.surfaceMint
+            : tone === 'lilac'
+              ? theme.surfaceLilac
+              : theme.surfaceButter;
 
   return (
     <Pressable
@@ -376,15 +393,12 @@ function FormatPreferenceButton({
       <View
         style={{
           alignItems: 'center',
-          backgroundColor: active
-            ? theme.surfaceAccent
-            : disabled
-              ? theme.surfaceMuted
-              : theme.surfaceMuted,
+          backgroundColor,
           borderColor: active ? theme.accentStrong : theme.borderSoft,
           borderRadius: Radii.lg,
           borderCurve: 'continuous',
           borderWidth: 1,
+          boxShadow: active ? '0 14px 28px rgba(23, 38, 78, 0.08)' : 'none',
           gap: 10,
           minHeight: 116,
           justifyContent: 'center',
@@ -413,6 +427,22 @@ function FormatPreferenceButton({
       </View>
     </Pressable>
   );
+}
+
+function getFormatTone(format: OutputFormat): SurfaceTone {
+  if (format === 'jpeg') {
+    return 'peach';
+  }
+
+  if (format === 'png') {
+    return 'sky';
+  }
+
+  if (format === 'webp') {
+    return 'mint';
+  }
+
+  return 'lilac';
 }
 
 function SettingsLinkRow({

@@ -42,6 +42,18 @@ type HistoryItemLike = {
   thumbnailUri: string;
 };
 
+export type SurfaceTone =
+  | 'accent'
+  | 'butter'
+  | 'danger'
+  | 'default'
+  | 'lilac'
+  | 'mint'
+  | 'muted'
+  | 'peach'
+  | 'raised'
+  | 'sky';
+
 export function ConverterScreen({
   backgroundMode = 'decorated',
   bottomNav = true,
@@ -115,11 +127,11 @@ export function BackgroundDecoration() {
     <View pointerEvents="none" style={{ inset: 0, position: 'absolute' }}>
       <View
         style={{
-          backgroundColor: theme.accentSoft,
+          backgroundColor: theme.surfacePeach,
           borderRadius: Radii.pill,
-          boxShadow: `0 0 90px ${theme.accentSoft}`,
+          boxShadow: `0 0 90px ${theme.surfacePeach}`,
           height: 220,
-          opacity: 0.18,
+          opacity: 0.42,
           position: 'absolute',
           right: -58,
           top: -72,
@@ -128,27 +140,27 @@ export function BackgroundDecoration() {
       />
       <View
         style={{
-          backgroundColor: theme.surfaceAccent,
+          backgroundColor: theme.surfaceSky,
           borderRadius: Radii.pill,
-          boxShadow: `0 0 80px ${theme.surfaceAccent}`,
-          height: 204,
+          boxShadow: `0 0 80px ${theme.surfaceSky}`,
+          height: 214,
           left: -96,
-          opacity: 0.58,
+          opacity: 0.66,
           position: 'absolute',
-          top: 340,
-          width: 204,
+          top: 280,
+          width: 214,
         }}
       />
       <View
         style={{
-          backgroundColor: theme.surfaceMuted,
+          backgroundColor: theme.surfaceButter,
           borderRadius: Radii.pill,
-          height: 160,
-          opacity: 0.7,
+          height: 170,
+          opacity: 0.54,
           position: 'absolute',
-          right: -54,
-          top: 620,
-          width: 160,
+          right: -48,
+          top: 560,
+          width: 170,
         }}
       />
     </View>
@@ -186,7 +198,7 @@ export function FloatingBottomNav() {
           justifyContent: 'space-between',
           maxWidth: 348,
           paddingHorizontal: Spacing.two,
-          paddingVertical: Spacing.two,
+          paddingVertical: 6,
           width: '100%',
         }}>
         <NavItem
@@ -239,16 +251,19 @@ function NavItem({
         flex: 1,
         opacity: pressed ? 0.78 : 1,
         paddingHorizontal: Spacing.one,
-        paddingVertical: Spacing.one,
+        paddingVertical: 3,
       })}>
       <View
         style={{
           alignItems: 'center',
-          backgroundColor: active ? theme.backgroundSelected : 'transparent',
-          borderColor: active ? theme.borderSoft : 'transparent',
+          backgroundColor: active ? theme.background : 'transparent',
+          borderColor: active ? theme.border : 'transparent',
           borderRadius: Radii.pill,
           borderWidth: 1,
+          boxShadow: active ? Shadows.card : 'none',
           gap: 2,
+          minHeight: 58,
+          minWidth: 98,
           paddingHorizontal: Spacing.four,
           paddingVertical: 8,
         }}>
@@ -284,40 +299,11 @@ export function SurfaceCard({
   padding?: number;
   radius?: number;
   style?: StyleProp<ViewStyle>;
-  tone?: 'accent' | 'danger' | 'default' | 'muted' | 'raised';
+  tone?: SurfaceTone;
 }) {
   const theme = useTheme();
 
-  const toneStyle =
-    tone === 'accent'
-      ? {
-          backgroundColor: theme.surfaceAccent,
-          borderColor: theme.borderSoft,
-          boxShadow: Shadows.raised,
-        }
-      : tone === 'danger'
-        ? {
-            backgroundColor: theme.destructiveSoft,
-            borderColor: theme.borderSoft,
-            boxShadow: 'none',
-          }
-        : tone === 'muted'
-          ? {
-              backgroundColor: theme.surfaceMuted,
-              borderColor: theme.borderSoft,
-              boxShadow: 'none',
-            }
-          : tone === 'raised'
-            ? {
-                backgroundColor: theme.surfaceRaised,
-                borderColor: theme.borderSoft,
-                boxShadow: Shadows.raised,
-              }
-            : {
-                backgroundColor: theme.surface,
-                borderColor: theme.borderSoft,
-                boxShadow: Shadows.card,
-              };
+  const toneStyle = getSurfaceToneStyle(theme, tone);
 
   return (
     <Animated.View
@@ -340,10 +326,12 @@ export function SurfaceCard({
 }
 
 export function PrimaryAction({
+  disabled = false,
   icon,
   label,
   onPress,
 }: {
+  disabled?: boolean;
   icon: PlatformIcon;
   label: string;
   onPress: () => void;
@@ -352,21 +340,25 @@ export function PrimaryAction({
 
   return (
     <RoundedActionButton
-      backgroundColor={theme.accent}
+      backgroundColor={disabled ? theme.surfaceMuted : theme.accent}
+      borderColor={disabled ? theme.border : undefined}
+      disabled={disabled}
       icon={icon}
       label={label}
-      labelColor="#ecfffb"
+      labelColor={disabled ? theme.textTertiary : '#fffaf7'}
       onPress={onPress}
-      shadowColor="rgba(15, 143, 131, 0.22)"
+      shadowColor={disabled ? undefined : 'rgba(242, 90, 67, 0.28)'}
     />
   );
 }
 
 export function SecondaryAction({
+  disabled = false,
   icon,
   label,
   onPress,
 }: {
+  disabled?: boolean;
   icon: PlatformIcon;
   label: string;
   onPress: () => void;
@@ -375,11 +367,12 @@ export function SecondaryAction({
 
   return (
     <RoundedActionButton
-      backgroundColor={theme.surface}
-      borderColor={theme.borderSoft}
+      backgroundColor={disabled ? theme.surfaceMuted : theme.surfaceRaised}
+      borderColor={theme.border}
+      disabled={disabled}
       icon={icon}
       label={label}
-      labelColor={theme.text}
+      labelColor={disabled ? theme.textTertiary : theme.text}
       onPress={onPress}
     />
   );
@@ -388,6 +381,7 @@ export function SecondaryAction({
 function RoundedActionButton({
   backgroundColor,
   borderColor,
+  disabled = false,
   icon,
   label,
   labelColor,
@@ -396,6 +390,7 @@ function RoundedActionButton({
 }: {
   backgroundColor: string;
   borderColor?: string;
+  disabled?: boolean;
   icon: PlatformIcon;
   label: string;
   labelColor: string;
@@ -405,15 +400,17 @@ function RoundedActionButton({
   return (
     <Pressable
       accessibilityRole="button"
+      disabled={disabled}
       onPress={onPress}
       style={({ pressed }) => ({
         backgroundColor,
         borderColor,
         borderRadius: Radii.pill,
+        borderCurve: 'continuous',
         borderWidth: borderColor ? 1 : 0,
         boxShadow: shadowColor ? `0 18px 34px ${shadowColor}` : 'none',
-        minHeight: 62,
-        opacity: pressed ? 0.8 : 1,
+        minHeight: 64,
+        opacity: disabled ? 1 : pressed ? 0.8 : 1,
         paddingHorizontal: Spacing.five,
         paddingVertical: Spacing.four,
       })}>
@@ -426,12 +423,16 @@ function RoundedActionButton({
         }}>
         <AppSymbol icon={icon} size={18} tintColor={labelColor} weight="semibold" />
         <Text
+          numberOfLines={1}
+          adjustsFontSizeToFit
           style={{
             color: labelColor,
             fontFamily: Fonts.sans,
-            fontSize: 17,
+            flexShrink: 1,
+            fontSize: 16,
             fontWeight: '700',
-            lineHeight: 24,
+            lineHeight: 22,
+            textAlign: 'center',
           }}>
           {label}
         </Text>
@@ -447,6 +448,7 @@ export function FormatOptionCard({
   icon,
   label,
   onPress,
+  tone = 'default',
 }: {
   active?: boolean;
   description: string;
@@ -454,8 +456,20 @@ export function FormatOptionCard({
   icon: PlatformIcon;
   label: string;
   onPress: () => void;
+  tone?: SurfaceTone;
 }) {
   const theme = useTheme();
+  const surfaceTone = getSurfaceToneStyle(theme, tone);
+  const cardBackgroundColor = disabled
+    ? theme.surfaceMuted
+    : active
+      ? theme.surface
+      : surfaceTone.backgroundColor;
+  const iconBackgroundColor = disabled
+    ? theme.surface
+    : active
+      ? theme.accentStrong
+      : theme.surface;
 
   return (
     <Pressable
@@ -469,12 +483,12 @@ export function FormatOptionCard({
       <View
         style={{
           alignItems: 'flex-start',
-          backgroundColor: active ? theme.surfaceAccent : disabled ? theme.surfaceMuted : theme.surface,
-          borderColor: active ? theme.success : theme.borderSoft,
+          backgroundColor: cardBackgroundColor,
+          borderColor: active ? theme.accentStrong : theme.border,
           borderRadius: Radii.lg,
           borderCurve: 'continuous',
           borderWidth: active ? 1.5 : 1,
-          boxShadow: active ? Shadows.raised : 'none',
+          boxShadow: active ? Shadows.raised : Shadows.card,
           gap: Spacing.four,
           minHeight: 158,
           justifyContent: 'space-between',
@@ -484,8 +498,9 @@ export function FormatOptionCard({
         <View
           style={{
             alignItems: 'center',
-            backgroundColor: active ? theme.accentStrong : theme.surfaceMuted,
+            backgroundColor: iconBackgroundColor,
             borderRadius: Radii.pill,
+            boxShadow: active ? '0 14px 22px rgba(23, 38, 78, 0.12)' : 'none',
             height: 52,
             justifyContent: 'center',
             width: 52,
@@ -529,7 +544,7 @@ export function FormatOptionCard({
                 web: 'checkmark.circle.fill',
               }}
               size={18}
-              tintColor={theme.success}
+              tintColor={theme.accentStrong}
               weight="semibold"
             />
           </View>
@@ -542,13 +557,15 @@ export function FormatOptionCard({
 export function RecentHeroCard({
   item,
   onPress,
+  tone = 'default',
 }: {
   item: HistoryItemLike;
   onPress?: () => void;
+  tone?: SurfaceTone;
 }) {
   const theme = useTheme();
   const content = (
-    <SurfaceCard padding={14} radius={Radii.xl} style={{ gap: 16 }}>
+    <SurfaceCard padding={14} radius={Radii.xl} style={{ gap: 16 }} tone={tone}>
       <View style={{ flexDirection: 'row', gap: 16 }}>
         <Image
           source={{ uri: item.thumbnailUri }}
@@ -617,13 +634,15 @@ export function RecentHeroCard({
 export function RecentMiniCard({
   item,
   onPress,
+  tone = 'default',
 }: {
   item: HistoryItemLike;
   onPress?: () => void;
+  tone?: SurfaceTone;
 }) {
   const theme = useTheme();
   const content = (
-    <SurfaceCard padding={12} radius={Radii.lg} style={{ flex: 1, gap: 12, minHeight: 214 }}>
+    <SurfaceCard padding={12} radius={Radii.lg} style={{ flex: 1, gap: 12, minHeight: 214 }} tone={tone}>
       <Image
         source={{ uri: item.thumbnailUri }}
         contentFit="cover"
@@ -688,7 +707,7 @@ export function EmptyStateCard({
   description: string;
   icon: PlatformIcon;
   title: string;
-  tone?: 'default' | 'muted';
+  tone?: 'default' | 'lilac' | 'muted' | 'peach' | 'sky';
 }) {
   const theme = useTheme();
 
@@ -745,8 +764,8 @@ export function FormatBadge({ format }: { format: OutputFormat }) {
   return (
     <View
       style={{
-        backgroundColor: theme.backgroundSelected,
-        borderColor: theme.borderSoft,
+        backgroundColor: theme.surface,
+        borderColor: theme.border,
         borderRadius: Radii.pill,
         borderWidth: 1,
         paddingHorizontal: 12,
@@ -772,15 +791,24 @@ export function InfoPill({
   tone = 'neutral',
 }: {
   label: string;
-  tone?: 'accent' | 'neutral';
+  tone?: 'accent' | 'neutral' | 'peach' | 'sky';
 }) {
   const theme = useTheme();
+  const backgroundColor =
+    tone === 'accent'
+      ? theme.surfaceSky
+      : tone === 'peach'
+        ? theme.surfacePeach
+        : tone === 'sky'
+          ? theme.surfaceSky
+          : theme.surface;
+  const textColor = tone === 'neutral' ? theme.textSecondary : theme.accentStrong;
 
   return (
     <View
       style={{
-        backgroundColor: tone === 'accent' ? theme.backgroundSelected : theme.surfaceRaised,
-        borderColor: theme.borderSoft,
+        backgroundColor,
+        borderColor: theme.border,
         borderRadius: Radii.pill,
         borderWidth: 1,
         paddingHorizontal: 12,
@@ -788,7 +816,7 @@ export function InfoPill({
       }}>
       <Text
         style={{
-          color: tone === 'accent' ? theme.accentStrong : theme.textSecondary,
+          color: textColor,
           fontFamily: Fonts.sans,
           fontSize: Type.caption.fontSize,
           fontWeight: '700',
@@ -853,9 +881,9 @@ export function ProgressBar({ progress }: { progress: number }) {
     <View
       onLayout={(event: LayoutChangeEvent) => setTrackWidth(event.nativeEvent.layout.width)}
       style={{
-        backgroundColor: theme.border,
+        backgroundColor: theme.surfaceMuted,
         borderRadius: Radii.pill,
-        height: 12,
+        height: 14,
         overflow: 'hidden',
         width: '100%',
       }}>
@@ -864,7 +892,7 @@ export function ProgressBar({ progress }: { progress: number }) {
           {
             backgroundColor: theme.accent,
             borderRadius: Radii.pill,
-            height: 12,
+            height: 14,
           },
           animatedStyle,
         ]}
@@ -885,7 +913,7 @@ export function QualitySlider({
   const theme = useTheme();
 
   return (
-    <SurfaceCard padding={Spacing.six} radius={Radii.xl} tone="raised" style={{ gap: Spacing.five }}>
+    <SurfaceCard padding={Spacing.six} radius={Radii.xl} tone="butter" style={{ gap: Spacing.five }}>
       <View
         style={{
           alignItems: 'flex-start',
@@ -919,8 +947,8 @@ export function QualitySlider({
 
         <View
           style={{
-            backgroundColor: theme.backgroundSelected,
-            borderColor: theme.borderSoft,
+            backgroundColor: theme.surface,
+            borderColor: theme.border,
             borderRadius: Radii.pill,
             borderWidth: 1,
             paddingHorizontal: 14,
@@ -1048,6 +1076,86 @@ export function SeeAllLink() {
       </Pressable>
     </Link>
   );
+}
+
+function getSurfaceToneStyle(theme: ReturnType<typeof useTheme>, tone: SurfaceTone) {
+  if (tone === 'accent') {
+    return {
+      backgroundColor: theme.surfaceAccent,
+      borderColor: theme.border,
+      boxShadow: Shadows.raised,
+    };
+  }
+
+  if (tone === 'butter') {
+    return {
+      backgroundColor: theme.surfaceButter,
+      borderColor: theme.borderSoft,
+      boxShadow: Shadows.card,
+    };
+  }
+
+  if (tone === 'danger') {
+    return {
+      backgroundColor: theme.destructiveSoft,
+      borderColor: theme.borderSoft,
+      boxShadow: 'none',
+    };
+  }
+
+  if (tone === 'lilac') {
+    return {
+      backgroundColor: theme.surfaceLilac,
+      borderColor: theme.borderSoft,
+      boxShadow: Shadows.card,
+    };
+  }
+
+  if (tone === 'mint') {
+    return {
+      backgroundColor: theme.surfaceMint,
+      borderColor: theme.borderSoft,
+      boxShadow: Shadows.card,
+    };
+  }
+
+  if (tone === 'muted') {
+    return {
+      backgroundColor: theme.surfaceMuted,
+      borderColor: theme.borderSoft,
+      boxShadow: 'none',
+    };
+  }
+
+  if (tone === 'peach') {
+    return {
+      backgroundColor: theme.surfacePeach,
+      borderColor: theme.borderSoft,
+      boxShadow: Shadows.card,
+    };
+  }
+
+  if (tone === 'raised') {
+    return {
+      backgroundColor: theme.surfaceRaised,
+      borderColor: theme.borderSoft,
+      boxShadow: Shadows.raised,
+    };
+  }
+
+  if (tone === 'sky') {
+    return {
+      backgroundColor: theme.surfaceSky,
+      borderColor: theme.borderSoft,
+      boxShadow: Shadows.card,
+    };
+  }
+
+  return {
+    backgroundColor: theme.surface,
+    borderColor: theme.borderSoft,
+    boxShadow: Shadows.card,
+  };
 }
 
 export function AppSymbol({

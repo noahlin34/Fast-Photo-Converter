@@ -10,6 +10,7 @@ import {
   InfoPill,
   PrimaryAction,
   SurfaceCard,
+  type SurfaceTone,
 } from '@/components/converter/shared';
 import { Fonts, Radii, Spacing, Type } from '@/constants/theme';
 import {
@@ -29,7 +30,7 @@ export function HistoryScreen() {
 
   return (
     <ConverterScreen>
-      <View style={{ gap: Spacing.three }}>
+      <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="butter" style={{ gap: Spacing.three }}>
         <Text
           style={{
             color: theme.textSecondary,
@@ -52,7 +53,7 @@ export function HistoryScreen() {
             />
           </View>
         ) : null}
-      </View>
+      </SurfaceCard>
 
       {!keepHistoryEnabled ? (
         <EmptyStateCard
@@ -66,11 +67,11 @@ export function HistoryScreen() {
           description="Turn it back on in Settings if you want the app to keep your converted photos here."
           icon={{ android: 'settings', ios: 'gearshape', web: 'gearshape' }}
           title="History archive is turned off"
-          tone="muted"
+          tone="lilac"
         />
       ) : history.length ? (
         <View style={{ gap: Spacing.four, paddingBottom: Spacing.seven }}>
-          {history.map((item) => (
+          {history.map((item, index) => (
             <HistoryArchiveCard
               key={item.id}
               item={item}
@@ -80,6 +81,7 @@ export function HistoryScreen() {
                   pathname: '/history/[id]',
                 })
               }
+              tone={index % 3 === 0 ? 'sky' : index % 3 === 1 ? 'peach' : 'butter'}
             />
           ))}
         </View>
@@ -99,6 +101,7 @@ export function HistoryScreen() {
             web: 'clock.arrow.circlepath',
           }}
           title="No converted photos yet"
+          tone="sky"
         />
       )}
     </ConverterScreen>
@@ -108,15 +111,17 @@ export function HistoryScreen() {
 function HistoryArchiveCard({
   item,
   onPress,
+  tone,
 }: {
   item: HistoryItem;
   onPress: () => void;
+  tone: SurfaceTone;
 }) {
   const theme = useTheme();
 
   return (
     <Pressable onPress={onPress} style={({ pressed }) => ({ opacity: pressed ? 0.88 : 1 })}>
-      <SurfaceCard padding={14} radius={Radii.xl} style={{ gap: Spacing.four }}>
+      <SurfaceCard padding={14} radius={Radii.xl} style={{ gap: Spacing.four }} tone={tone}>
         <View style={{ flexDirection: 'row', gap: Spacing.four }}>
           <Image
             source={{ uri: item.thumbnailUri }}

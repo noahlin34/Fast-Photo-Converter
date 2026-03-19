@@ -101,11 +101,24 @@ export const Spacing = {
 } as const;
 
 export const Radii = {
+  xs: 12,
   sm: 16,
   md: 22,
   lg: 32,
   xl: 42,
   pill: 999,
+} as const;
+
+export const Controls = {
+  buttonHeight: 60,
+  buttonCompactHeight: 52,
+  chipHeight: 32,
+  chipLargeHeight: 38,
+  iconSm: 14,
+  iconMd: 18,
+  iconLg: 20,
+  navItemHeight: 56,
+  navItemMinWidth: 92,
 } as const;
 
 export const Shadows = {
@@ -119,6 +132,8 @@ export const Type = {
   bodySmall: { fontSize: 14, lineHeight: 20 },
   caption: { fontSize: 12, lineHeight: 16 },
   label: { fontSize: 11, lineHeight: 15 },
+  button: { fontSize: 17, lineHeight: 22 },
+  chip: { fontSize: 12, lineHeight: 16 },
   sectionTitle: { fontSize: 20, lineHeight: 28 },
   title: { fontSize: 28, lineHeight: 34 },
   titleLarge: { fontSize: 34, lineHeight: 42 },

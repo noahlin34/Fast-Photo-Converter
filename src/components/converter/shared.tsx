@@ -22,6 +22,7 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
+  Controls,
   Fonts,
   MaxContentWidth,
   Radii,
@@ -97,7 +98,7 @@ export function ConverterScreen({
           contentContainerStyle={{
             paddingBottom: (bottomNav ? 128 : 52) + insets.bottom,
             paddingHorizontal: Spacing.five,
-            paddingTop: Spacing.three,
+            paddingTop: Spacing.four,
           }}
           showsVerticalScrollIndicator={false}>
           {content}
@@ -109,7 +110,7 @@ export function ConverterScreen({
             justifyContent: verticalAlign === 'center' ? 'center' : 'flex-start',
             paddingBottom: 36 + insets.bottom,
             paddingHorizontal: Spacing.five,
-            paddingTop: Spacing.five,
+            paddingTop: Spacing.six,
           }}>
           {content}
         </View>
@@ -194,11 +195,11 @@ export function FloatingBottomNav() {
           borderWidth: 1,
           boxShadow: Shadows.floating,
           flexDirection: 'row',
-          gap: Spacing.one,
+          gap: Spacing.two,
           justifyContent: 'space-between',
-          maxWidth: 348,
+          maxWidth: 356,
           paddingHorizontal: Spacing.two,
-          paddingVertical: 6,
+          paddingVertical: Spacing.two,
           width: '100%',
         }}>
         <NavItem
@@ -251,7 +252,6 @@ function NavItem({
         flex: 1,
         opacity: pressed ? 0.78 : 1,
         paddingHorizontal: Spacing.one,
-        paddingVertical: 3,
       })}>
       <View
         style={{
@@ -261,15 +261,16 @@ function NavItem({
           borderRadius: Radii.pill,
           borderWidth: 1,
           boxShadow: active ? Shadows.card : 'none',
-          gap: 2,
-          minHeight: 58,
-          minWidth: 98,
-          paddingHorizontal: Spacing.four,
-          paddingVertical: 8,
+          gap: Spacing.one,
+          justifyContent: 'center',
+          minHeight: Controls.navItemHeight,
+          minWidth: Controls.navItemMinWidth,
+          paddingHorizontal: Spacing.three,
+          paddingVertical: Spacing.two,
         }}>
         <AppSymbol
           icon={icon}
-          size={18}
+          size={Controls.iconMd}
           tintColor={active ? theme.accentStrong : theme.textTertiary}
           weight="medium"
         />
@@ -280,6 +281,7 @@ function NavItem({
             fontSize: Type.label.fontSize,
             fontWeight: '700',
             lineHeight: Type.label.lineHeight,
+            textAlign: 'center',
           }}>
           {label}
         </Text>
@@ -409,29 +411,27 @@ function RoundedActionButton({
         borderCurve: 'continuous',
         borderWidth: borderColor ? 1 : 0,
         boxShadow: shadowColor ? `0 18px 34px ${shadowColor}` : 'none',
-        minHeight: 64,
+        justifyContent: 'center',
+        minHeight: Controls.buttonHeight,
         opacity: disabled ? 1 : pressed ? 0.8 : 1,
         paddingHorizontal: Spacing.five,
-        paddingVertical: Spacing.four,
       })}>
       <View
         style={{
           alignItems: 'center',
           flexDirection: 'row',
-          gap: Spacing.three,
+          gap: Spacing.two,
           justifyContent: 'center',
         }}>
-        <AppSymbol icon={icon} size={18} tintColor={labelColor} weight="semibold" />
+        <AppSymbol icon={icon} size={Controls.iconMd} tintColor={labelColor} weight="semibold" />
         <Text
           numberOfLines={1}
-          adjustsFontSizeToFit
           style={{
             color: labelColor,
             fontFamily: Fonts.sans,
-            flexShrink: 1,
-            fontSize: 16,
+            fontSize: Type.button.fontSize,
             fontWeight: '700',
-            lineHeight: 22,
+            lineHeight: Type.button.lineHeight,
             textAlign: 'center',
           }}>
           {label}
@@ -490,10 +490,10 @@ export function FormatOptionCard({
           borderWidth: active ? 1.5 : 1,
           boxShadow: active ? Shadows.raised : Shadows.card,
           gap: Spacing.four,
-          minHeight: 158,
+          minHeight: 164,
           justifyContent: 'space-between',
-          paddingHorizontal: Spacing.five,
-          paddingVertical: Spacing.five,
+          paddingHorizontal: Spacing.four,
+          paddingVertical: Spacing.four,
         }}>
         <View
           style={{
@@ -501,19 +501,19 @@ export function FormatOptionCard({
             backgroundColor: iconBackgroundColor,
             borderRadius: Radii.pill,
             boxShadow: active ? '0 14px 22px rgba(23, 38, 78, 0.12)' : 'none',
-            height: 52,
+            height: 50,
             justifyContent: 'center',
-            width: 52,
+            width: 50,
           }}>
           <AppSymbol
             icon={icon}
-            size={20}
+            size={Controls.iconLg}
             tintColor={active ? theme.surfaceRaised : disabled ? theme.textTertiary : theme.accentStrong}
             weight="medium"
           />
         </View>
 
-        <View style={{ gap: 4, width: '100%' }}>
+        <View style={{ gap: Spacing.one, width: '100%' }}>
           <Text
             style={{
               color: theme.text,
@@ -536,14 +536,14 @@ export function FormatOptionCard({
         </View>
 
         {active ? (
-          <View style={{ position: 'absolute', right: 14, top: 14 }}>
+          <View style={{ position: 'absolute', right: 12, top: 12 }}>
             <AppSymbol
               icon={{
                 android: 'check_circle',
                 ios: 'checkmark.circle.fill',
                 web: 'checkmark.circle.fill',
               }}
-              size={18}
+              size={Controls.iconMd}
               tintColor={theme.accentStrong}
               weight="semibold"
             />
@@ -565,8 +565,8 @@ export function RecentHeroCard({
 }) {
   const theme = useTheme();
   const content = (
-    <SurfaceCard padding={14} radius={Radii.xl} style={{ gap: 16 }} tone={tone}>
-      <View style={{ flexDirection: 'row', gap: 16 }}>
+    <SurfaceCard padding={Spacing.four} radius={Radii.xl} style={{ gap: Spacing.four }} tone={tone}>
+      <View style={{ alignItems: 'center', flexDirection: 'row', gap: Spacing.four }}>
         <Image
           source={{ uri: item.thumbnailUri }}
           contentFit="cover"
@@ -577,8 +577,8 @@ export function RecentHeroCard({
           }}
         />
 
-        <View style={{ flex: 1, gap: 10, justifyContent: 'space-between' }}>
-          <View style={{ gap: 6 }}>
+        <View style={{ flex: 1, gap: Spacing.three, justifyContent: 'space-between' }}>
+          <View style={{ gap: Spacing.two }}>
             <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
               {item.outputFormat ? <FormatBadge format={item.outputFormat} /> : <View />}
               <AppSymbol
@@ -587,7 +587,7 @@ export function RecentHeroCard({
                   ios: 'chevron.right',
                   web: 'chevron.right',
                 }}
-                size={14}
+                size={Controls.iconSm}
                 tintColor={theme.textTertiary}
                 weight="bold"
               />
@@ -642,7 +642,11 @@ export function RecentMiniCard({
 }) {
   const theme = useTheme();
   const content = (
-    <SurfaceCard padding={12} radius={Radii.lg} style={{ flex: 1, gap: 12, minHeight: 214 }} tone={tone}>
+    <SurfaceCard
+      padding={Spacing.three}
+      radius={Radii.lg}
+      style={{ flex: 1, gap: Spacing.three, justifyContent: 'space-between', minHeight: 214 }}
+      tone={tone}>
       <Image
         source={{ uri: item.thumbnailUri }}
         contentFit="cover"
@@ -653,7 +657,7 @@ export function RecentMiniCard({
         }}
       />
 
-      <View style={{ gap: 4 }}>
+      <View style={{ gap: Spacing.one }}>
         <Text
           numberOfLines={1}
           style={{
@@ -768,17 +772,21 @@ export function FormatBadge({ format }: { format: OutputFormat }) {
         borderColor: theme.border,
         borderRadius: Radii.pill,
         borderWidth: 1,
-        paddingHorizontal: 12,
-        paddingVertical: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: Controls.chipHeight,
+        paddingHorizontal: Spacing.three,
       }}>
       <Text
         style={{
           color: theme.accentStrong,
           fontFamily: Fonts.sans,
-          fontSize: 10,
+          fontSize: Type.chip.fontSize,
+          fontVariant: ['tabular-nums'],
           fontWeight: '800',
           letterSpacing: 0.6,
-          lineHeight: 14,
+          lineHeight: Type.chip.lineHeight,
+          textAlign: 'center',
         }}>
         {getDisplayFormatLabel(format)}
       </Text>
@@ -811,16 +819,20 @@ export function InfoPill({
         borderColor: theme.border,
         borderRadius: Radii.pill,
         borderWidth: 1,
-        paddingHorizontal: 12,
-        paddingVertical: 7,
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: Controls.chipLargeHeight,
+        paddingHorizontal: Spacing.three,
       }}>
       <Text
         style={{
           color: textColor,
           fontFamily: Fonts.sans,
-          fontSize: Type.caption.fontSize,
+          fontSize: Type.chip.fontSize,
+          fontVariant: ['tabular-nums'],
           fontWeight: '700',
-          lineHeight: Type.caption.lineHeight,
+          lineHeight: Type.chip.lineHeight,
+          textAlign: 'center',
         }}>
         {label}
       </Text>
@@ -883,7 +895,7 @@ export function ProgressBar({ progress }: { progress: number }) {
       style={{
         backgroundColor: theme.surfaceMuted,
         borderRadius: Radii.pill,
-        height: 14,
+        height: 12,
         overflow: 'hidden',
         width: '100%',
       }}>
@@ -892,7 +904,7 @@ export function ProgressBar({ progress }: { progress: number }) {
           {
             backgroundColor: theme.accent,
             borderRadius: Radii.pill,
-            height: 14,
+            height: 12,
           },
           animatedStyle,
         ]}
@@ -913,15 +925,15 @@ export function QualitySlider({
   const theme = useTheme();
 
   return (
-    <SurfaceCard padding={Spacing.six} radius={Radii.xl} tone="butter" style={{ gap: Spacing.five }}>
+    <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="butter" style={{ gap: Spacing.four }}>
       <View
         style={{
-          alignItems: 'flex-start',
+          alignItems: 'center',
           flexDirection: 'row',
           gap: Spacing.four,
           justifyContent: 'space-between',
         }}>
-        <View style={{ flex: 1, gap: 4 }}>
+        <View style={{ flex: 1, gap: Spacing.one }}>
           <Text
             style={{
               color: theme.textSecondary,
@@ -951,24 +963,28 @@ export function QualitySlider({
             borderColor: theme.border,
             borderRadius: Radii.pill,
             borderWidth: 1,
-            paddingHorizontal: 14,
-            paddingVertical: 8,
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: Controls.chipLargeHeight,
+            minWidth: 74,
+            paddingHorizontal: Spacing.three,
           }}>
           <Text
             style={{
               color: theme.accentStrong,
               fontFamily: Fonts.sans,
-              fontSize: 21,
+              fontSize: 20,
               fontVariant: ['tabular-nums'],
               fontWeight: '800',
-              lineHeight: 24,
+              lineHeight: 22,
+              textAlign: 'center',
             }}>
             {value}%
           </Text>
         </View>
       </View>
 
-      <View style={{ marginHorizontal: -4 }}>
+      <View style={{ marginHorizontal: -2 }}>
         <Slider
           maximumTrackTintColor={theme.border}
           maximumValue={100}
@@ -987,6 +1003,7 @@ export function QualitySlider({
             color: theme.textTertiary,
             fontFamily: Fonts.sans,
             fontSize: Type.caption.fontSize,
+            fontVariant: ['tabular-nums'],
             fontWeight: '800',
             letterSpacing: 0.5,
             lineHeight: Type.caption.lineHeight,
@@ -998,6 +1015,7 @@ export function QualitySlider({
             color: theme.textTertiary,
             fontFamily: Fonts.sans,
             fontSize: Type.caption.fontSize,
+            fontVariant: ['tabular-nums'],
             fontWeight: '800',
             letterSpacing: 0.5,
             lineHeight: Type.caption.lineHeight,
@@ -1024,6 +1042,7 @@ export function SectionTitle({
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        minHeight: 28,
         width: '100%',
       }}>
       <Text
@@ -1050,8 +1069,9 @@ export function SeeAllLink() {
         style={({ pressed }) => ({
           alignItems: 'center',
           flexDirection: 'row',
-          gap: 6,
+          gap: Spacing.one,
           opacity: pressed ? 0.76 : 1,
+          paddingVertical: Spacing.one,
         })}>
         <Text
           style={{
@@ -1069,7 +1089,7 @@ export function SeeAllLink() {
             ios: 'chevron.right',
             web: 'chevron.right',
           }}
-          size={12}
+          size={Controls.iconSm}
           tintColor={theme.accentStrong}
           weight="bold"
         />

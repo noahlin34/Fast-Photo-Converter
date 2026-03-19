@@ -132,6 +132,11 @@ export function getCompression(quality: number, format: OutputFormat) {
     return 1;
   }
 
+  if (format === 'webp') {
+    const normalizedQuality = clamp((quality - 50) / 50, 0, 1);
+    return interpolate(0.3, 0.9, normalizedQuality);
+  }
+
   return clamp(quality / 100, 0.5, 1);
 }
 
@@ -165,6 +170,19 @@ export function getOutputMimeType(format: OutputFormat) {
       return 'image/png';
     case 'webp':
       return 'image/webp';
+  }
+}
+
+export function getOutputUti(format: OutputFormat) {
+  switch (format) {
+    case 'heic':
+      return 'public.heic';
+    case 'jpeg':
+      return 'public.jpeg';
+    case 'png':
+      return 'public.png';
+    case 'webp':
+      return 'org.webmproject.webp';
   }
 }
 

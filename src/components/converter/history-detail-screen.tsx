@@ -29,7 +29,14 @@ export function HistoryDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { deleteHistoryItem, getHistoryItem, startConversionFromHistory } = useConverter();
   const item = id ? getHistoryItem(id) : null;
-  const { saveToPhotos, shareExport } = useExportActions(item?.uri ?? null);
+  const { hasSavedToPhotos, saveToPhotos, shareExport } = useExportActions(
+    item
+      ? {
+          outputFormat: item.outputFormat,
+          uri: item.uri,
+        }
+      : null
+  );
 
   useEffect(() => {
     if (!item) {
@@ -78,11 +85,11 @@ export function HistoryDetailScreen() {
 
   return (
     <ConverterScreen bottomNav={false}>
-      <SurfaceCard padding={Spacing.four} radius={Radii.xl} tone="raised" style={{ gap: Spacing.four }}>
+      <SurfaceCard padding={Spacing.four} radius={Radii.xl} tone="sky" style={{ gap: Spacing.four }}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.two }}>
           <FormatBadge format={item.outputFormat} />
           <InfoPill label={item.sizeText} />
-          <InfoPill label={formatDimensions(item.width, item.height)} />
+          <InfoPill label={formatDimensions(item.width, item.height)} tone="sky" />
         </View>
 
         <Text
@@ -101,7 +108,7 @@ export function HistoryDetailScreen() {
         <View
           style={{
             alignItems: 'center',
-            backgroundColor: theme.surfaceMuted,
+            backgroundColor: theme.surface,
             borderRadius: Radii.xl,
             borderCurve: 'continuous',
             justifyContent: 'center',
@@ -121,7 +128,7 @@ export function HistoryDetailScreen() {
         </View>
       </SurfaceCard>
 
-      <SurfaceCard padding={Spacing.five} radius={Radii.xl} style={{ gap: Spacing.four }}>
+      <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="raised" style={{ gap: Spacing.four }}>
         <DetailRow label="Format" value={getDisplayFormatLabel(item.outputFormat)} />
         <CardDivider />
         <DetailRow label="File Size" value={item.sizeText} />
@@ -140,11 +147,12 @@ export function HistoryDetailScreen() {
       <View style={{ gap: Spacing.four }}>
         <PrimaryAction
           icon={{
-            android: 'download',
-            ios: 'square.and.arrow.down',
-            web: 'square.and.arrow.down',
+            android: hasSavedToPhotos ? 'check' : 'download',
+            ios: hasSavedToPhotos ? 'checkmark' : 'square.and.arrow.down',
+            web: hasSavedToPhotos ? 'checkmark' : 'square.and.arrow.down',
           }}
-          label="Save to Photos"
+          disabled={hasSavedToPhotos}
+          label={hasSavedToPhotos ? 'Saved' : 'Save to Photos'}
           onPress={saveToPhotos}
         />
 

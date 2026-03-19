@@ -18,7 +18,7 @@ export function ProcessingScreen() {
   const theme = useTheme();
   const router = useRouter();
   const { completeConversion, currentPhoto, supportedOutputFormat } = useConverter();
-  const [progress, setProgress] = useState(0.62);
+  const [progress, setProgress] = useState(0.18);
 
   useEffect(() => {
     let isActive = true;
@@ -30,16 +30,17 @@ export function ProcessingScreen() {
         return;
       }
 
-      let nextProgress = 0.62;
+      let nextProgress = 0.18;
       setProgress(nextProgress);
 
       timer = setInterval(() => {
-        nextProgress = Math.min(nextProgress + 0.035, 0.92);
+        const increment = nextProgress > 0.84 ? 0.012 : nextProgress > 0.68 ? 0.02 : 0.032;
+        nextProgress = Math.min(nextProgress + increment, 0.96);
 
         if (isActive) {
           setProgress(nextProgress);
         }
-      }, 140);
+      }, 120);
 
       try {
         await Promise.all([completeConversion(), delay(1100)]);
@@ -80,19 +81,23 @@ export function ProcessingScreen() {
     };
   }, [completeConversion, currentPhoto, router, supportedOutputFormat]);
 
-  const progressLabel = Math.round(progress * 100);
+  const statusLabel = progress > 0.9 ? 'Finalizing' : progress > 0.5 ? 'Encoding' : 'Preparing';
+  const helperLabel =
+    progress > 0.9
+      ? 'Wrapping up the final file now.'
+      : supportedOutputFormat
+        ? `Converting your image to ${getDisplayFormatLabel(supportedOutputFormat)} with your selected settings.`
+        : 'Optimizing your image with your selected settings.';
 
   return (
     <ConverterScreen backgroundMode="minimal" bottomNav={false} scrollable={false} verticalAlign="center">
       <View style={{ alignItems: 'center', gap: Spacing.four }}>
-        {supportedOutputFormat ? <FormatBadge format={supportedOutputFormat} /> : null}
-
         <View
           style={{
             alignItems: 'center',
-            backgroundColor: theme.surfaceAccent,
+            backgroundColor: theme.surfaceButter,
             borderRadius: Radii.pill,
-            boxShadow: '0 18px 34px rgba(15, 143, 131, 0.14)',
+            boxShadow: '0 18px 30px rgba(23, 38, 78, 0.08)',
             height: 88,
             justifyContent: 'center',
             width: 88,
@@ -126,14 +131,12 @@ export function ProcessingScreen() {
               lineHeight: Type.body.lineHeight,
               textAlign: 'center',
             }}>
-            {supportedOutputFormat
-              ? `Converting your image to ${getDisplayFormatLabel(supportedOutputFormat)} with your selected settings.`
-              : 'Optimizing your image with your selected settings.'}
+            {helperLabel}
           </Text>
         </View>
       </View>
 
-      <SurfaceCard padding={Spacing.six} radius={Radii.xl} tone="raised" style={{ gap: Spacing.five }}>
+      <SurfaceCard padding={Spacing.six} radius={Radii.xl} tone="lilac" style={{ gap: Spacing.five }}>
         <View
           style={{
             alignItems: 'center',
@@ -148,19 +151,9 @@ export function ProcessingScreen() {
               fontWeight: '700',
               lineHeight: Type.bodySmall.lineHeight,
             }}>
-            Processing
+            {statusLabel}
           </Text>
-          <Text
-            style={{
-              color: theme.accentStrong,
-              fontFamily: Fonts.sans,
-              fontSize: 22,
-              fontVariant: ['tabular-nums'],
-              fontWeight: '800',
-              lineHeight: 24,
-            }}>
-            {progressLabel}%
-          </Text>
+          <FormatBadge format={supportedOutputFormat ?? 'jpeg'} />
         </View>
 
         <ProgressBar progress={progress} />

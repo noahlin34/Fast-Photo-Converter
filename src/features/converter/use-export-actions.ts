@@ -4,9 +4,26 @@ import React from 'react';
 import { Alert } from 'react-native';
 import * as Sharing from 'expo-sharing';
 
-export function useExportActions(uri: string | null) {
+import {
+  getOutputMimeType,
+  getOutputUti,
+  type OutputFormat,
+} from '@/features/converter/converter-utils';
+
+type ExportTarget = {
+  outputFormat: OutputFormat;
+  uri: string;
+};
+
+export function useExportActions(target: ExportTarget | null) {
+  const [hasSavedToPhotos, setHasSavedToPhotos] = React.useState(false);
+
+  React.useEffect(() => {
+    setHasSavedToPhotos(false);
+  }, [target?.outputFormat, target?.uri]);
+
   const saveToPhotos = React.useCallback(async () => {
-    if (!uri) {
+    if (!target?.uri || hasSavedToPhotos) {
       return;
     }
 
@@ -18,16 +35,25 @@ export function useExportActions(uri: string | null) {
         return;
       }
 
-      await MediaLibrary.saveToLibraryAsync(uri);
+      if (target.outputFormat === 'webp') {
+        await MediaLibrary.createAssetAsync(target.uri);
+      } else {
+        await MediaLibrary.saveToLibraryAsync(target.uri);
+      }
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      Alert.alert('Saved', 'Your converted image is now in Photos.');
+      setHasSavedToPhotos(true);
     } catch {
-      Alert.alert('Could not save image', 'Please try again.');
+      Alert.alert(
+        target.outputFormat === 'webp' ? 'Could not save WebP image' : 'Could not save image',
+        target.outputFormat === 'webp'
+          ? 'Try Share if Photos keeps rejecting this WebP export on your device.'
+          : 'Please try again.'
+      );
     }
-  }, [uri]);
+  }, [hasSavedToPhotos, target]);
 
   const shareExport = React.useCallback(async () => {
-    if (!uri) {
+    if (!target?.uri) {
       return;
     }
 
@@ -39,13 +65,17 @@ export function useExportActions(uri: string | null) {
         return;
       }
 
-      await Sharing.shareAsync(uri);
+      await Sharing.shareAsync(target.uri, {
+        UTI: getOutputUti(target.outputFormat),
+        mimeType: getOutputMimeType(target.outputFormat),
+      });
     } catch {
       Alert.alert('Could not share image', 'Please try again.');
     }
-  }, [uri]);
+  }, [target]);
 
   return {
+    hasSavedToPhotos,
     saveToPhotos,
     shareExport,
   };

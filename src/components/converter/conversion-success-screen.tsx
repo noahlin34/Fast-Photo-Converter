@@ -22,7 +22,14 @@ export function ConversionSuccessScreen() {
   const theme = useTheme();
   const router = useRouter();
   const { currentExport, resetForAnother } = useConverter();
-  const { saveToPhotos, shareExport } = useExportActions(currentExport?.uri ?? null);
+  const { hasSavedToPhotos, saveToPhotos, shareExport } = useExportActions(
+    currentExport
+      ? {
+          outputFormat: currentExport.outputFormat,
+          uri: currentExport.uri,
+        }
+      : null
+  );
 
   useEffect(() => {
     if (!currentExport) {
@@ -40,9 +47,9 @@ export function ConversionSuccessScreen() {
         <View
           style={{
             alignItems: 'center',
-            backgroundColor: theme.surfaceAccent,
+            backgroundColor: theme.surfaceButter,
             borderRadius: Radii.pill,
-            boxShadow: '0 22px 34px rgba(15, 143, 131, 0.14)',
+            boxShadow: '0 18px 30px rgba(23, 38, 78, 0.08)',
             height: 96,
             justifyContent: 'center',
             width: 96,
@@ -85,11 +92,11 @@ export function ConversionSuccessScreen() {
         </View>
       </View>
 
-      <SurfaceCard padding={Spacing.four} radius={Radii.xl} tone="raised" style={{ gap: Spacing.four }}>
+      <SurfaceCard padding={Spacing.four} radius={Radii.xl} tone="peach" style={{ gap: Spacing.four }}>
         <View
           style={{
             alignItems: 'center',
-            backgroundColor: theme.surfaceMuted,
+            backgroundColor: theme.surface,
             borderRadius: Radii.xl,
             borderCurve: 'continuous',
             justifyContent: 'center',
@@ -140,11 +147,12 @@ export function ConversionSuccessScreen() {
       <View style={{ gap: Spacing.four }}>
         <PrimaryAction
           icon={{
-            android: 'download',
-            ios: 'square.and.arrow.down',
-            web: 'square.and.arrow.down',
+            android: hasSavedToPhotos ? 'check' : 'download',
+            ios: hasSavedToPhotos ? 'checkmark' : 'square.and.arrow.down',
+            web: hasSavedToPhotos ? 'checkmark' : 'square.and.arrow.down',
           }}
-          label="Save to Photos"
+          disabled={hasSavedToPhotos}
+          label={hasSavedToPhotos ? 'Saved' : 'Save to Photos'}
           onPress={saveToPhotos}
         />
 
@@ -159,7 +167,7 @@ export function ConversionSuccessScreen() {
           <View style={{ flex: 1 }}>
             <SecondaryAction
               icon={{ android: 'add', ios: 'plus', web: 'plus' }}
-              label="Convert Another"
+              label="New Conversion"
               onPress={() => {
                 resetForAnother();
                 router.replace('/');

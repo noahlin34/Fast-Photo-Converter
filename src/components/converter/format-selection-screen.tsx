@@ -106,7 +106,7 @@ export function FormatSelectionScreen() {
       <View style={{ gap: Spacing.four }}>
         <SectionTitle title="Output Format" />
 
-        <View style={{ flexDirection: 'row', gap: Spacing.four }}>
+        <View style={{ alignItems: 'stretch', flexDirection: 'row', gap: Spacing.four }}>
           <FormatOptionCard
             active={outputFormat === 'jpeg'}
             description="Most compatible"
@@ -129,7 +129,7 @@ export function FormatSelectionScreen() {
           />
         </View>
 
-        <View style={{ flexDirection: 'row', gap: Spacing.four }}>
+        <View style={{ alignItems: 'stretch', flexDirection: 'row', gap: Spacing.four }}>
           <FormatOptionCard
             active={outputFormat === 'webp'}
             description="Smaller web export"

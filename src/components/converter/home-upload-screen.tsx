@@ -278,7 +278,7 @@ function QuickActionButton({
           <AppSymbol icon={icon} size={20} tintColor={theme.accentStrong} weight="medium" />
         </View>
 
-        <View style={{ gap: 4 }}>
+        <View style={{ gap: Spacing.one }}>
           <Text
             style={{
               color: theme.text,

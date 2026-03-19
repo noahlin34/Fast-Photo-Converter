@@ -43,7 +43,7 @@ export function ConversionSuccessScreen() {
 
   return (
     <ConverterScreen bottomNav={false}>
-      <View style={{ alignItems: 'center', gap: Spacing.four }}>
+      <View style={{ alignItems: 'center', gap: Spacing.five }}>
         <View
           style={{
             alignItems: 'center',
@@ -66,7 +66,7 @@ export function ConversionSuccessScreen() {
           />
         </View>
 
-        <View style={{ alignItems: 'center', gap: 10 }}>
+        <View style={{ alignItems: 'center', gap: Spacing.two }}>
           <Text
             style={{
               color: theme.text,
@@ -115,15 +115,17 @@ export function ConversionSuccessScreen() {
           />
         </View>
 
-        <View style={{ gap: 12 }}>
+        <View style={{ gap: Spacing.three }}>
           <View
             style={{
-              alignItems: 'center',
+              alignItems: 'flex-start',
               flexDirection: 'row',
+              flexWrap: 'wrap',
+              gap: Spacing.two,
               justifyContent: 'space-between',
             }}>
             <FormatBadge format={currentExport.outputFormat} />
-            <View style={{ flexDirection: 'row', gap: Spacing.two }}>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.two, justifyContent: 'flex-end' }}>
               <InfoPill label={currentExport.sizeText} />
               <InfoPill label={formatDimensions(currentExport.width, currentExport.height)} />
             </View>

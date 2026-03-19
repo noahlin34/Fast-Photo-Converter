@@ -91,7 +91,7 @@ export function ProcessingScreen() {
 
   return (
     <ConverterScreen backgroundMode="minimal" bottomNav={false} scrollable={false} verticalAlign="center">
-      <View style={{ alignItems: 'center', gap: Spacing.four }}>
+      <View style={{ alignItems: 'center', gap: Spacing.five }}>
         <View
           style={{
             alignItems: 'center',
@@ -110,7 +110,7 @@ export function ProcessingScreen() {
           />
         </View>
 
-        <View style={{ alignItems: 'center', gap: 10 }}>
+        <View style={{ alignItems: 'center', gap: Spacing.two }}>
           <Text
             style={{
               color: theme.text,
@@ -136,7 +136,7 @@ export function ProcessingScreen() {
         </View>
       </View>
 
-      <SurfaceCard padding={Spacing.six} radius={Radii.xl} tone="lilac" style={{ gap: Spacing.five }}>
+      <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="lilac" style={{ gap: Spacing.four }}>
         <View
           style={{
             alignItems: 'center',

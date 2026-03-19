@@ -117,8 +117,8 @@ export function SettingsScreen() {
       <View style={{ gap: Spacing.four }}>
         <SectionTitle title="Defaults" />
 
-        <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="sky" style={{ gap: Spacing.five }}>
-          <View style={{ gap: 8 }}>
+        <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="sky" style={{ gap: Spacing.four }}>
+          <View style={{ gap: Spacing.one }}>
             <Text
               style={{
                 color: theme.text,
@@ -169,8 +169,8 @@ export function SettingsScreen() {
           ) : null}
         </SurfaceCard>
 
-        <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="butter" style={{ gap: Spacing.five }}>
-          <View style={{ gap: 8 }}>
+        <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="butter" style={{ gap: Spacing.four }}>
+          <View style={{ gap: Spacing.one }}>
             <Text
               style={{
                 color: theme.text,
@@ -201,15 +201,16 @@ export function SettingsScreen() {
       <View style={{ gap: Spacing.four }}>
         <SectionTitle title="History" />
 
-        <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="raised" style={{ gap: Spacing.five }}>
+        <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="raised" style={{ gap: Spacing.four }}>
           <View
             style={{
               alignItems: 'center',
               flexDirection: 'row',
               gap: Spacing.four,
               justifyContent: 'space-between',
+              minHeight: 44,
             }}>
-            <View style={{ flex: 1, gap: 6 }}>
+            <View style={{ flex: 1, gap: Spacing.one }}>
               <Text
                 style={{
                   color: theme.text,
@@ -260,9 +261,10 @@ export function SettingsScreen() {
                 alignItems: 'center',
                 flexDirection: 'row',
                 gap: Spacing.three,
+                minHeight: 56,
                 justifyContent: 'space-between',
               }}>
-              <View style={{ flexDirection: 'row', flex: 1, gap: Spacing.three }}>
+              <View style={{ alignItems: 'center', flexDirection: 'row', flex: 1, gap: Spacing.three }}>
                 <View
                   style={{
                     alignItems: 'center',
@@ -279,7 +281,7 @@ export function SettingsScreen() {
                     weight="semibold"
                   />
                 </View>
-                <View style={{ flex: 1, gap: 4 }}>
+                <View style={{ flex: 1, gap: Spacing.one }}>
                   <Text
                     style={{
                       color: theme.destructive,
@@ -399,9 +401,9 @@ function FormatPreferenceButton({
           borderCurve: 'continuous',
           borderWidth: 1,
           boxShadow: active ? '0 14px 28px rgba(23, 38, 78, 0.08)' : 'none',
-          gap: 10,
-          minHeight: 116,
+          gap: Spacing.two,
           justifyContent: 'center',
+          minHeight: 116,
           paddingHorizontal: Spacing.four,
           paddingVertical: Spacing.four,
         }}>
@@ -466,6 +468,7 @@ function SettingsLinkRow({
           flexDirection: 'row',
           gap: Spacing.three,
           justifyContent: 'space-between',
+          minHeight: 60,
           paddingVertical: Spacing.four,
         }}>
         <View
@@ -480,7 +483,7 @@ function SettingsLinkRow({
           <AppSymbol icon={icon} size={16} tintColor={theme.accentStrong} weight="medium" />
         </View>
 
-        <View style={{ flex: 1, gap: 4 }}>
+        <View style={{ flex: 1, gap: Spacing.one }}>
           <Text
             style={{
               color: theme.text,
@@ -531,6 +534,7 @@ function SettingsValueRow({
         flexDirection: 'row',
         gap: Spacing.three,
         justifyContent: 'space-between',
+        minHeight: 56,
         paddingVertical: Spacing.four,
       }}>
       <View

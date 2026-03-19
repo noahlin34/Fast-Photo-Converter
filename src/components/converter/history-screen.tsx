@@ -121,8 +121,8 @@ function HistoryArchiveCard({
 
   return (
     <Pressable onPress={onPress} style={({ pressed }) => ({ opacity: pressed ? 0.88 : 1 })}>
-      <SurfaceCard padding={14} radius={Radii.xl} style={{ gap: Spacing.four }} tone={tone}>
-        <View style={{ flexDirection: 'row', gap: Spacing.four }}>
+      <SurfaceCard padding={Spacing.four} radius={Radii.xl} style={{ gap: Spacing.three }} tone={tone}>
+        <View style={{ alignItems: 'center', flexDirection: 'row', gap: Spacing.four }}>
           <Image
             source={{ uri: item.thumbnailUri }}
             contentFit="cover"
@@ -133,12 +133,14 @@ function HistoryArchiveCard({
             }}
           />
 
-          <View style={{ flex: 1, gap: 10, justifyContent: 'space-between' }}>
-            <View style={{ gap: 8 }}>
+          <View style={{ flex: 1, gap: Spacing.three, justifyContent: 'space-between' }}>
+            <View style={{ gap: Spacing.two }}>
               <View
                 style={{
                   alignItems: 'center',
                   flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  gap: Spacing.two,
                   justifyContent: 'space-between',
                 }}>
                 <InfoPill label={formatHistoryDateLabel(item.createdAt)} />

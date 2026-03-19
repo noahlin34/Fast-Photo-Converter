@@ -128,7 +128,7 @@ export function HistoryDetailScreen() {
         </View>
       </SurfaceCard>
 
-      <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="raised" style={{ gap: Spacing.four }}>
+      <SurfaceCard padding={Spacing.five} radius={Radii.xl} tone="raised" style={{ gap: Spacing.three }}>
         <DetailRow label="Format" value={getDisplayFormatLabel(item.outputFormat)} />
         <CardDivider />
         <DetailRow label="File Size" value={item.sizeText} />
@@ -186,6 +186,7 @@ export function HistoryDetailScreen() {
               alignItems: 'center',
               flexDirection: 'row',
               gap: Spacing.three,
+              minHeight: 56,
               justifyContent: 'center',
             }}>
             <AppSymbol
@@ -227,6 +228,7 @@ function DetailRow({
         flexDirection: 'row',
         gap: Spacing.four,
         justifyContent: 'space-between',
+        minHeight: 24,
       }}>
       <Text
         style={{
@@ -244,6 +246,7 @@ function DetailRow({
           color: theme.text,
           flex: 1,
           fontFamily: Fonts.sans,
+          fontVariant: ['tabular-nums'],
           fontSize: Type.body.fontSize,
           fontWeight: '600',
           lineHeight: Type.body.lineHeight,

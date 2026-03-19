@@ -1,0 +1,7 @@
+{
+  "name": "expo-heic-encoder",
+  "version": "1.0.0",
+  "description": "Local iOS HEIC encoder module for Fast Photo Converter",
+  "license": "MIT",
+  "private": true
+}
